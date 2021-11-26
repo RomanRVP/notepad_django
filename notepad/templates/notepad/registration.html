@@ -1,0 +1,9 @@
+{% extends 'notepad/base.html' %}
+
+{% block body %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Регистрация</button>
+</form>
+{% endblock body %}
