@@ -1,13 +1,13 @@
 {% extends 'notepad/base.html' %}
 
 {% block title %}
-<title>registration</title>
+<title>login</title>
 {% endblock title %}
 
 {% block body %}
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Регистрация</button>
+    <button type="submit">Войти</button>
 </form>
 {% endblock body %}
