@@ -1,0 +1,18 @@
+{% extends 'notepad/base.html' %}
+
+{% block title %}
+<title>add page</title>
+{% endblock title %}
+
+{% block body %}
+
+{% if message %}
+<p>{{ message }}</p>
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Добавить страницу</button>
+</form>
+{% endblock body %}

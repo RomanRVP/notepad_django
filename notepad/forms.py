@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Notepad, Category
+from .models import Notepad, Category, PageForNotepad
 
 
 class UserAddCategoryForm(forms.Form):
@@ -18,7 +18,7 @@ class UserAddNotepadForm(forms.ModelForm):
     Форма для создания блокнота пользователем.
     """
     def __init__(self, user_id, *args, **kwargs):
-        super(UserAddNotepadForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['category'].queryset = Category.objects.filter(
             owner=user_id)
 
@@ -27,4 +27,21 @@ class UserAddNotepadForm(forms.ModelForm):
         fields = ('title', 'category')
         error_messages = {
             'title': {'required': 'Название блокнота не может быть пустым!'},
+        }
+
+
+class UserAddPageForm(forms.ModelForm):
+    """
+    Форма для создания страницы, в определённом блокноте.
+    """
+    def __init__(self, user_id, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['notepad'].queryset = Notepad.objects.filter(owner=user_id)
+
+    class Meta:
+        model = PageForNotepad
+        fields = ('notepad', 'title', 'page_text')
+        error_messages = {
+            'title': {'required': 'Имя страницы не может быть пустым.'},
+            'page_text': {'required': 'Текст страницы не может быть пустым.'},
         }

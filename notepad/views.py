@@ -6,8 +6,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from .forms import UserAddCategoryForm, UserAddNotepadForm
-from .models import Category, Notepad
+from .forms import UserAddCategoryForm, UserAddNotepadForm, UserAddPageForm
+from .models import Category, Notepad, PageForNotepad
 
 
 class BaseView(views.View):
@@ -109,3 +109,33 @@ class UserAddNotepadView(views.View):
             if not request.user.is_authenticated:
                 context['message'] += ' Вам необходимо авторизоваться.'
         return render(request, template, context)
+
+
+class UserAddPageView(views.View):
+    """
+    Создание страницы в блокноте.
+    """
+    def get(self, request, *args, **kwargs):
+        form = UserAddPageForm(request.user.id)
+        context = {'form': form}
+        return render(request, 'notepad/user_add_page.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = UserAddPageForm(request.user.id, request.POST)
+        context = {'form': form}
+        template = 'notepad/user_add_page.html'
+        if form.is_valid() and request.user.is_authenticated:
+            obj = PageForNotepad(**form.cleaned_data)
+            obj.save()
+            context['message'] = f'Страница {form.cleaned_data["title"]} ' \
+                                 f'в блокноте {form.cleaned_data["notepad"]}' \
+                                 f' была создана.'
+            return render(request, template, context)
+        else:
+            context['message'] = 'Ошибка.'
+            if not form.is_valid():
+                context['message'] += ' Форма заполнена неверно.'
+            if not request.user.is_authenticated:
+                context['message'] += ' Вам необходимо авторизоваться.'
+        return render(request, template, context)
+
