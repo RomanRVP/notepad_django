@@ -6,8 +6,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from .forms import UserAddCategoryForm
-from .models import Category
+from .forms import UserAddCategoryForm, UserAddNotepadForm
+from .models import Category, Notepad
 
 
 class BaseView(views.View):
@@ -79,4 +79,33 @@ class UserAddCategoryView(views.View):
             if not request.user.is_authenticated:
                 context['message'] += ' Вам необходимо авторизоваться.'
 
+        return render(request, template, context)
+
+
+class UserAddNotepadView(views.View):
+    """
+    Создание блокнота пользователем.
+    """
+    def get(self, request, *args, **kwargs):
+        form = UserAddNotepadForm(request.user.id)
+        context = {'form': form}
+        return render(request, 'notepad/user_add_notepad.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = UserAddNotepadForm(request.user.id, request.POST)
+        context = {'form': form}
+        template = 'notepad/user_add_notepad.html'
+        if form.is_valid() and request.user.is_authenticated:
+            form.cleaned_data['owner'] = request.user
+            obj = Notepad(**form.cleaned_data)
+            obj.save()
+            context['message'] = f'Блокнот {form.cleaned_data["title"]}' \
+                                 f'был создан.'
+            return render(request, template, context)
+        else:
+            context['message'] = 'Ошибка.'
+            if not form.is_valid():
+                context['message'] += ' Форма заполнена неверно.'
+            if not request.user.is_authenticated:
+                context['message'] += ' Вам необходимо авторизоваться.'
         return render(request, template, context)
