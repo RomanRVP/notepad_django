@@ -13,6 +13,7 @@ from .forms import (
     UserDeleteCategoryForm
 )
 from .models import Category, Notepad, PageForNotepad
+from .service.context_for_forms import get_error_context_for_forms
 
 
 class BaseView(views.View):
@@ -78,12 +79,8 @@ class UserAddCategoryView(views.View):
             return render(request, template, context)
 
         else:
-            context['message'] = 'Ошибка.'
-            if not form.is_valid():
-                context['message'] += ' Форма заполнена неверно.'
-            if not request.user.is_authenticated:
-                context['message'] += ' Вам необходимо авторизоваться.'
-
+            context['message'] = get_error_context_for_forms(
+                form.is_valid(), request.user.is_authenticated)
         return render(request, template, context)
 
 
@@ -108,11 +105,8 @@ class UserAddNotepadView(views.View):
                                  f'был создан.'
             return render(request, template, context)
         else:
-            context['message'] = 'Ошибка.'
-            if not form.is_valid():
-                context['message'] += ' Форма заполнена неверно.'
-            if not request.user.is_authenticated:
-                context['message'] += ' Вам необходимо авторизоваться.'
+            context['message'] = get_error_context_for_forms(
+                form.is_valid(), request.user.is_authenticated)
         return render(request, template, context)
 
 
@@ -137,11 +131,8 @@ class UserAddPageView(views.View):
                                  f' была создана.'
             return render(request, template, context)
         else:
-            context['message'] = 'Ошибка.'
-            if not form.is_valid():
-                context['message'] += ' Форма заполнена неверно.'
-            if not request.user.is_authenticated:
-                context['message'] += ' Вам необходимо авторизоваться.'
+            context['message'] = get_error_context_for_forms(
+                form.is_valid(), request.user.is_authenticated)
         return render(request, template, context)
 
 
@@ -170,9 +161,6 @@ class UserDeleteCategoryView(views.View):
                                      'сперва нужно её выбрать.'
             return render(request, template, context)
         else:
-            context['message'] = 'Ошибка.'
-            if not form.is_valid():
-                context['message'] += ' Форма заполнена неверно.'
-            if not request.user.is_authenticated:
-                context['message'] += ' Вам необходимо авторизоваться.'
+            context['message'] = get_error_context_for_forms(
+                form.is_valid(), request.user.is_authenticated)
         return render(request, template, context)
