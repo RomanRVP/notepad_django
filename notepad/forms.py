@@ -1,7 +1,10 @@
 from django import forms
 
 from .models import Notepad, Category, PageForNotepad
-from .service.choices_generator_for_forms import generate_choices_for_category
+from .service.choices_generator_for_forms import (
+    generate_choices_for_category,
+    generate_choices_for_notepad
+)
 
 
 class UserAddCategoryForm(forms.Form):
@@ -62,3 +65,20 @@ class UserDeleteCategoryForm(forms.Form):
             'invalid_choice': 'Выберите доступную категорию.'
         }
     )
+
+
+class UserDeleteNotepadForm(forms.Form):
+    """
+    Форма для удаления блокнота пользователем.
+    """
+    def __init__(self, user_id, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['choice_notepad_for_delete'].choices = \
+            generate_choices_for_notepad(user_id)
+    choice_notepad_for_delete = forms.ChoiceField(
+        label='Выберите блокнот для удаления', required=None,
+        error_messages={
+            'invalid_choice': 'Выберите доступный блокнот.'
+        }
+    )
+

@@ -10,7 +10,8 @@ from .forms import (
     UserAddCategoryForm,
     UserAddNotepadForm,
     UserAddPageForm,
-    UserDeleteCategoryForm
+    UserDeleteCategoryForm,
+    UserDeleteNotepadForm
 )
 from .models import Category, Notepad, PageForNotepad
 from .service.context_for_forms import get_error_context_for_forms
@@ -159,6 +160,36 @@ class UserDeleteCategoryView(views.View):
             else:
                 context['message'] = 'Что бы удалить категорию, ' \
                                      'сперва нужно её выбрать.'
+            return render(request, template, context)
+        else:
+            context['message'] = get_error_context_for_forms(
+                form.is_valid(), request.user.is_authenticated)
+        return render(request, template, context)
+
+
+class UserDeleteNotepadView(views.View):
+    """
+    Удаления блокнота пользователем.
+    """
+    def get(self, request, *args, **kwargs):
+        form = UserDeleteNotepadForm(request.user.id)
+        context = {'form': form}
+        return render(request, 'notepad/user_del_notepad.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = UserDeleteNotepadForm(request.user.id, request.POST)
+        context = {'form': form}
+        template = 'notepad/user_del_notepad.html'
+        if form.is_valid() and request.user.is_authenticated:
+            notepad_id = form.cleaned_data['choice_notepad_for_delete']
+            if notepad_id:
+                obj = Notepad.objects.get(pk=notepad_id)
+                notepad_title = obj.title
+                obj.delete()
+                context['message'] = f'Блокнот {notepad_title} был удален.'
+            else:
+                context['message'] = 'Что бы удалить блокнот, ' \
+                                     'сперва нужно его выбрать.'
             return render(request, template, context)
         else:
             context['message'] = get_error_context_for_forms(

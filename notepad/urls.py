@@ -8,7 +8,8 @@ from .views import (
     UserAddCategoryView,
     UserAddNotepadView,
     UserAddPageView,
-    UserDeleteCategoryView
+    UserDeleteCategoryView,
+    UserDeleteNotepadView
 )
 
 urlpatterns = [
@@ -20,5 +21,6 @@ urlpatterns = [
     path('add_page/', UserAddPageView.as_view(), name='add_page'),
     path('del_category/', UserDeleteCategoryView.as_view(),
          name='del_category'),
+    path('del_notepad/', UserDeleteNotepadView.as_view(), name='del_notepad'),
     path('', BaseView.as_view(), name='homepage')
 ]
