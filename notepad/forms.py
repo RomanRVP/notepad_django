@@ -1,6 +1,7 @@
 from django import forms
 
 from .models import Notepad, Category, PageForNotepad
+from .service.choices_generator_for_forms import generate_choices_for_category
 
 
 class UserAddCategoryForm(forms.Form):
@@ -45,3 +46,16 @@ class UserAddPageForm(forms.ModelForm):
             'title': {'required': 'Имя страницы не может быть пустым.'},
             'page_text': {'required': 'Текст страницы не может быть пустым.'},
         }
+
+
+class UserDeleteCategoryForm(forms.Form):
+    """
+    Форма для удаления категории пользователем.
+    """
+    def __init__(self, user_id, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['choice_category_for_delete'].choices = \
+            generate_choices_for_category(user_id)
+    choice_category_for_delete = forms.ChoiceField(
+        label='Выберите категорию для удаления', required=None
+    )

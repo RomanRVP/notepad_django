@@ -6,7 +6,12 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from .forms import UserAddCategoryForm, UserAddNotepadForm, UserAddPageForm
+from .forms import (
+    UserAddCategoryForm,
+    UserAddNotepadForm,
+    UserAddPageForm,
+    UserDeleteCategoryForm
+)
 from .models import Category, Notepad, PageForNotepad
 
 
@@ -139,3 +144,30 @@ class UserAddPageView(views.View):
                 context['message'] += ' Вам необходимо авторизоваться.'
         return render(request, template, context)
 
+
+class UserDeleteCategoryView(views.View):
+    """
+    Удаления категории пользователем.
+    """
+    def get(self, request, *args, **kwargs):
+        form = UserDeleteCategoryForm(request.user.id)
+        context = {'form': form}
+        return render(request, 'notepad/user_del_category.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = UserDeleteCategoryForm(request.user.id, request.POST)
+        context = {'form': form}
+        template = 'notepad/user_del_category.html'
+        if form.is_valid() and request.user.is_authenticated:
+            category_id = form.cleaned_data['choice_category_for_delete']
+            if category_id:
+                obj = Category.objects.get(pk=category_id)
+                category_name = obj.name
+                obj.delete()
+                context['message'] = f'Категория {category_name} была удалена.'
+            else:
+                context['message'] = 'Что бы удалить категорию, ' \
+                                     'сперва нужно её выбрать.'
+            return render(request, template, context)
+
+        return render(request, template, context)
