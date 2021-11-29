@@ -169,5 +169,10 @@ class UserDeleteCategoryView(views.View):
                 context['message'] = 'Что бы удалить категорию, ' \
                                      'сперва нужно её выбрать.'
             return render(request, template, context)
-
+        else:
+            context['message'] = 'Ошибка.'
+            if not form.is_valid():
+                context['message'] += ' Форма заполнена неверно.'
+            if not request.user.is_authenticated:
+                context['message'] += ' Вам необходимо авторизоваться.'
         return render(request, template, context)
