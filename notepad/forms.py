@@ -57,5 +57,8 @@ class UserDeleteCategoryForm(forms.Form):
         self.fields['choice_category_for_delete'].choices = \
             generate_choices_for_category(user_id)
     choice_category_for_delete = forms.ChoiceField(
-        label='Выберите категорию для удаления', required=None
+        label='Выберите категорию для удаления', required=None,
+        error_messages={
+            'invalid_choice': 'Выберите доступную категорию.'
+        }
     )
