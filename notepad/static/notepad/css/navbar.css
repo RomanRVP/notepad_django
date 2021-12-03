@@ -1,9 +1,22 @@
 .nav-container {
-    background-color: darkgrey;
+    background-color: whitesmoke;
     max-width: 1280px;
     min-width: 100px;
-    border: red solid 3px;
+    height: 60px;
     padding: 3px;
     margin-left: auto;
     margin-right: auto;
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.nav-menu {
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
 }
