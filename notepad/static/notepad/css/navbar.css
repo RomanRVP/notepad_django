@@ -1,0 +1,9 @@
+.nav-container {
+    background-color: darkgrey;
+    max-width: 1280px;
+    min-width: 100px;
+    border: red solid 3px;
+    padding: 3px;
+    margin-left: auto;
+    margin-right: auto;
+}

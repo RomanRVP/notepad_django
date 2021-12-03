@@ -9,16 +9,25 @@
     {% endblock title %}
 </head>
 <body>
-<div class="body-wrapper">
+<div class="wrapper">
 
-{% include "notepad/navbar.html" %}
+    <div class="body-navbar">
+        {% include "notepad/navbar.html" %}
+    </div>
 
-{% block body %}
-<h3>homepage</h3>
-<br>
-{{ user }}
-{% endblock body %}
+    <div class="body-content">
+        {% block body %}
+        <h3>homepage</h3>
+        <br>
+        {{ user }}
+        {% endblock body %}
+    </div>
 
 </div>
+
+    <div class="body-footer">
+        {% include "notepad/footer.html" %}
+    </div>
+
 </body>
 </html>
