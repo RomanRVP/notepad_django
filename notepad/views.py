@@ -17,12 +17,19 @@ from .models import Category, Notepad, PageForNotepad
 from .service.context_for_forms import get_error_context_for_forms
 
 
-class BaseView(views.View):
+class HomePage(views.View):
     """
     Заглушка (для домашней страницы).
     """
     def get(self, request, *args, **kwargs):
-        return render(request, 'notepad/base.html')
+        if request.user.is_authenticated:
+            context = {
+                'categories_list': Category.objects.filter(owner=request.user),
+                'notepads_list': Notepad.objects.filter(owner=request.user)
+            }
+        else:
+            context = None
+        return render(request, 'notepad/base.html', context=context)
 
 
 class RegistrationUser(CreateView):

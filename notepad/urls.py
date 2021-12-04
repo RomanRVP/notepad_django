@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import (
     RegistrationUser,
-    BaseView,
+    HomePage,
     LoginUser,
     LogoutUser,
     UserAddCategoryView,
@@ -22,5 +22,5 @@ urlpatterns = [
     path('del_category/', UserDeleteCategoryView.as_view(),
          name='del_category'),
     path('del_notepad/', UserDeleteNotepadView.as_view(), name='del_notepad'),
-    path('', BaseView.as_view(), name='homepage')
+    path('', HomePage.as_view(), name='homepage')
 ]
