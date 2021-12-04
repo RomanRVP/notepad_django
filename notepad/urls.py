@@ -10,7 +10,8 @@ from .views import (
     UserAddPageView,
     UserDeleteCategoryView,
     UserDeleteNotepadView,
-    HomePageWithSpecificCategoryView
+    HomePageWithSpecificCategoryView,
+    NotepadDetailView
 )
 
 urlpatterns = [
@@ -25,5 +26,7 @@ urlpatterns = [
     path('del_notepad/', UserDeleteNotepadView.as_view(), name='del_notepad'),
     path('category/<str:slug>/', HomePageWithSpecificCategoryView.as_view(),
          name='specific_category'),
+    path('notepad/<str:name>/<int:page>/<str:category>/',
+         NotepadDetailView.as_view(), name='specific_notepad'),
     path('', HomePage.as_view(), name='homepage')
 ]

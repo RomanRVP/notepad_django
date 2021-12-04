@@ -35,9 +35,9 @@
     <div class="homepage-content">
         <div class="notepads-list">
             {% for notepad in notepads_list%}
-            <a href="#">
+            <a href="{{ notepad.get_absolute_url }}">
                 <div class="notepad">
-                    {{ notepad.title }}
+                    {{ notepad.title }} kek
                 </div>
             </a>
             {% endfor %}

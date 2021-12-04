@@ -1,4 +1,5 @@
 {% extends 'notepad/base.html' %}
+{% load static %}
 
 <link rel="stylesheet" href="{% static 'notepad/css/notepad_detail.css'%}">
 
@@ -8,6 +9,6 @@
 
 {% block body %}
 
-
+{{ notepad }}
 
 {% endblock body %}

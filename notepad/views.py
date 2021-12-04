@@ -52,6 +52,35 @@ class HomePageWithSpecificCategoryView(views.View):
         return render(request, 'notepad/base.html', context=context)
 
 
+class NotepadDetailView(views.View):
+    """
+    Просмотр конкретного блокнота (и его страниц соответственно).
+    """
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            category_slug = kwargs.get('category')
+            if category_slug != 'None':
+                context = {
+                    'notepad': Notepad.objects.filter(
+                        owner=request.user,
+                        category=Category.objects.filter(
+                            slug=category_slug, owner=request.user
+                        ).first().id,
+                        slug=kwargs.get('name')
+                    )
+                }
+            elif category_slug == 'None':
+                context = {
+                    'notepad': Notepad.objects.filter(
+                        owner=request.user,
+                        slug=kwargs.get('name')
+                    )
+                }
+        else:
+            context = None
+        return render(request, 'notepad/notepad_detail.html', context=context)
+
+
 class RegistrationUser(CreateView):
     """
     Регистрация пользователя.
@@ -129,7 +158,7 @@ class UserAddNotepadView(views.View):
             form.cleaned_data['owner'] = request.user
             obj = Notepad(**form.cleaned_data)
             obj.save()
-            context['message'] = f'Блокнот {form.cleaned_data["title"]}' \
+            context['message'] = f'Блокнот {form.cleaned_data["title"]} ' \
                                  f'был создан.'
             return render(request, template, context)
         else:
