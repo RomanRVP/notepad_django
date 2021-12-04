@@ -1,0 +1,33 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'notepad/css/homepage.css'%}">
+
+<div class="homepage-wrapper">
+
+    <div class="sidebar">
+        <div class="sidebar-list">
+            <h4>Категории:</h4>
+            <br>
+            {% for category in categories_list %}
+            <a href="/">
+                <p class="category-link">
+                    {{ category.name }}
+                </p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="homepage-content">
+        <div class="notepads-list">
+            {% for notepad in notepads_list%}
+            <a href="#">
+                <div class="notepad">
+                    {{ notepad.title }}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
