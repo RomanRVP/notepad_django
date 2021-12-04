@@ -16,7 +16,13 @@ class Category(models.Model):
     slug = models.SlugField(default='', editable=False)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        # Делаем уникальный слаг для каждой категории пользователя.
+        # Проблема была в том, что имя "CAT#3" и "cat3" генерировали
+        # одинаковый слаг ("cat3"). Данный костыль нужно будет рефакторить.
+        unique_slug = slugify(self.name)
+        while Category.objects.filter(owner=self.owner, slug=unique_slug):
+            unique_slug += '-'
+        self.slug = unique_slug
         super().save(*args, kwargs)
 
     def get_absolute_url(self):
