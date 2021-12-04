@@ -1,5 +1,7 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
+from django.urls import reverse
+from django.utils.text import slugify
 
 
 class Category(models.Model):
@@ -11,6 +13,14 @@ class Category(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE,
                               verbose_name='Владелец категории')
+    slug = models.SlugField(default='', editable=False)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, kwargs)
+
+    def get_absolute_url(self):
+        return reverse('specific_category', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.name

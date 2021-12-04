@@ -23,7 +23,7 @@
             <h4>Ваши категории:</h4>
             <br>
             {% for category in categories_list %}
-            <a href="/">
+            <a href="{{ category.get_absolute_url }}">
                 <p class="category-link">
                     {{ category.name }}
                 </p>

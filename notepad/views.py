@@ -19,13 +19,33 @@ from .service.context_for_forms import get_error_context_for_forms
 
 class HomePage(views.View):
     """
-    Заглушка (для домашней страницы).
+    Главная страница (со списком категорий и блокнотов пользователя).
     """
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             context = {
                 'categories_list': Category.objects.filter(owner=request.user),
                 'notepads_list': Notepad.objects.filter(owner=request.user)
+            }
+        else:
+            context = None
+        return render(request, 'notepad/base.html', context=context)
+
+
+class HomePageWithSpecificCategory(views.View):
+    """
+    Главная страница
+    (со списком категорий и блокнотов пользователя в определённой категории).
+    """
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            context = {
+                'categories_list': Category.objects.filter(owner=request.user),
+                'notepads_list': Notepad.objects.filter(
+                    owner=request.user,
+                    category=Category.objects.filter(
+                        slug=kwargs.get('slug'), owner=request.user
+                    ).first().id)
             }
         else:
             context = None
