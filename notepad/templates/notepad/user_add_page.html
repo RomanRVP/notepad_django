@@ -10,9 +10,16 @@
 <p>{{ message }}</p>
 {% endif %}
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Добавить страницу</button>
-</form>
+<div class="form-wrapper">
+    <form method="POST" class="custom-form">
+        {% csrf_token %}
+        {% for i in form %}
+        <div class="field">
+            <p>{{ i.label }}</p>
+            <p>{{ i }}</p>
+        </div>
+        {% endfor %}
+        <button type="submit">Добавить страницу</button>
+    </form>
+</div>
 {% endblock body %}

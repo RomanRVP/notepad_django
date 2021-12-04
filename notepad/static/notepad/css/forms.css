@@ -1,0 +1,14 @@
+.form-wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: cornflowerblue;
+}
+
+.field {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 6px;
+}
