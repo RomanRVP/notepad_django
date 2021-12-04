@@ -6,7 +6,21 @@
 
     <div class="sidebar">
         <div class="sidebar-list">
-            <h4>Категории:</h4>
+            <div class="sidebar-buttons-menu">
+                <a href="{% url 'add_category' %}" class="sidebar-buttons-menu-btn">
+                    <h5>Добавить категорию</h5>
+                </a>
+                <a href="{% url 'del_category' %}" class="sidebar-buttons-menu-btn">
+                    <h5>Удалить категорию</h5>
+                </a>
+                <a href="{% url 'add_notepad' %}" class="sidebar-buttons-menu-btn">
+                    <h5>Создать блокнот</h5>
+                </a>
+                <a href="{% url 'del_notepad' %}" class="sidebar-buttons-menu-btn">
+                    <h5>Удалить блокнот</h5>
+                </a>
+            </div>
+            <h4>Ваши категории:</h4>
             <br>
             {% for category in categories_list %}
             <a href="/">

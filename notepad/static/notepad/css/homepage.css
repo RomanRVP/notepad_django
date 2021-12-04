@@ -8,15 +8,26 @@
     width: 20%;
     display: flex;
     justify-content: center;
+    overflow: auto;
 }
 
 .sidebar-list {
     max-width: 100%;
 }
 
+.sidebar-buttons-menu {
+    margin: 2px;
+    width: 100%;
+}
+
+.sidebar-buttons-menu-btn {
+    margin: 1px;
+}
+
 .category-link {
+    margin: 2px;
     text-overflow: ellipsis;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .homepage-content {
