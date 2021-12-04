@@ -51,6 +51,20 @@ class Notepad(models.Model):
                                  verbose_name='Категория блокнота',
                                  related_name='Notepad')
 
+    slug = models.SlugField(default='', editable=False)
+
+    def save(self, *args, **kwargs):
+        unique_slug = slugify(self.title)
+        while Notepad.objects.filter(owner=self.owner, slug=unique_slug):
+            unique_slug += '-'
+        self.slug = unique_slug
+        super().save(*args, kwargs)
+
+    def get_absolute_url(self):
+        return reverse('specific_notepad', kwargs={'name': self.slug,
+                                                   'page': 0,
+                                                   'category': self.category})
+
     def __str__(self):
         return self.title
 
