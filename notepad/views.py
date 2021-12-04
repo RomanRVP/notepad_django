@@ -32,7 +32,7 @@ class HomePage(views.View):
         return render(request, 'notepad/base.html', context=context)
 
 
-class HomePageWithSpecificCategory(views.View):
+class HomePageWithSpecificCategoryView(views.View):
     """
     Главная страница
     (со списком категорий и блокнотов пользователя в определённой категории).
