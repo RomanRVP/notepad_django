@@ -1,3 +1,5 @@
+from django.utils.text import slugify
+
 from ..models import Category, Notepad, PageForNotepad
 
 
@@ -7,6 +9,7 @@ def get_context_for_home_page_with_specific_category_view(user, category_slug):
     блокноты пользователя в конкретной категории, если таки имеются.
     """
     context = dict()
+    category_slug = slugify(category_slug)
     categories_list = Category.objects.filter(owner=user)
     if categories_list:
         context['categories_list'] = categories_list
@@ -30,6 +33,7 @@ def get_context_for_detail_notepad_view(
     а также страницы (и конкретную страницу) если они есть в блокноте.
     """
     context = dict()
+    notepad_slug = slugify(notepad_slug)
 
     def _get_specific_notepad_and_pages(notepad):
         if notepad:
@@ -43,6 +47,7 @@ def get_context_for_detail_notepad_view(
                     context['specific_page'] = pages[page_num]
 
     if category_slug != 'None':
+        category_slug = slugify(category_slug)
         specific_category = Category.objects.filter(
             owner=user,
             slug=category_slug
