@@ -61,9 +61,10 @@ class Notepad(models.Model):
         super().save(*args, kwargs)
 
     def get_absolute_url(self):
-        return reverse('specific_notepad', kwargs={'name': self.slug,
-                                                   'page': 0,
-                                                   'category': self.category})
+        return reverse('specific_notepad',
+                       kwargs={'notepad_slug': self.slug,
+                               'page_num': 0,
+                               'category_slug': self.category})
 
     def __str__(self):
         return self.title

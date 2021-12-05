@@ -15,6 +15,10 @@ from .forms import (
 )
 from .models import Category, Notepad, PageForNotepad
 from .service.context_for_forms import get_error_context_for_forms
+from .service.context_for_views import (
+    get_context_for_home_page_with_specific_category_view,
+    get_context_for_detail_notepad_view
+)
 
 
 class HomePage(views.View):
@@ -39,14 +43,9 @@ class HomePageWithSpecificCategoryView(views.View):
     """
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            context = {
-                'categories_list': Category.objects.filter(owner=request.user),
-                'notepads_list': Notepad.objects.filter(
-                    owner=request.user,
-                    category=Category.objects.filter(
-                        slug=kwargs.get('slug'), owner=request.user
-                    ).first().id)
-            }
+            context = get_context_for_home_page_with_specific_category_view(
+                request.user, kwargs.get('slug')
+            )
         else:
             context = None
         return render(request, 'notepad/base.html', context=context)
@@ -57,33 +56,15 @@ class NotepadDetailView(views.View):
     Просмотр конкретного блокнота (и его страниц соответственно).
     """
     def get(self, request, *args, **kwargs):
-        context = dict()
         if request.user.is_authenticated:
-            category_slug = kwargs.get('category')
-            if category_slug != 'None':
-                specific_category = Category.objects.filter(
-                    slug=category_slug, owner=request.user).first()
-                if specific_category:
-                    specific_category = specific_category.id
-                specific_notepad = Notepad.objects.filter(
-                    owner=request.user,
-                    category=specific_category,
-                    slug=kwargs.get('name')
-                ).first()
-            elif category_slug == 'None':
-                specific_notepad = Notepad.objects.filter(
-                    owner=request.user,
-                    slug=kwargs.get('name')
-                ).first()
-            if specific_notepad:
-                context['notepad'] = specific_notepad
-                pages = PageForNotepad.objects.filter(
-                    notepad=specific_notepad.id)
-                if pages:
-                    context['pages'] = pages
-                    if len(pages) > kwargs.get('page'):
-                        specific_page = pages[kwargs.get('page')]
-                        context['specific_page'] = specific_page
+            context = get_context_for_detail_notepad_view(
+                request.user,
+                kwargs.get('category_slug'),
+                kwargs.get('notepad_slug'),
+                kwargs.get('page_num')
+            )
+        else:
+            context = None
         return render(request, 'notepad/notepad_detail.html', context=context)
 
 
