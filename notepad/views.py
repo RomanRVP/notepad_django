@@ -57,27 +57,33 @@ class NotepadDetailView(views.View):
     Просмотр конкретного блокнота (и его страниц соответственно).
     """
     def get(self, request, *args, **kwargs):
+        context = dict()
         if request.user.is_authenticated:
             category_slug = kwargs.get('category')
             if category_slug != 'None':
-                context = {
-                    'notepad': Notepad.objects.filter(
-                        owner=request.user,
-                        category=Category.objects.filter(
-                            slug=category_slug, owner=request.user
-                        ).first().id,
-                        slug=kwargs.get('name')
-                    )
-                }
+                specific_category = Category.objects.filter(
+                    slug=category_slug, owner=request.user).first()
+                if specific_category:
+                    specific_category = specific_category.id
+                specific_notepad = Notepad.objects.filter(
+                    owner=request.user,
+                    category=specific_category,
+                    slug=kwargs.get('name')
+                ).first()
             elif category_slug == 'None':
-                context = {
-                    'notepad': Notepad.objects.filter(
-                        owner=request.user,
-                        slug=kwargs.get('name')
-                    )
-                }
-        else:
-            context = None
+                specific_notepad = Notepad.objects.filter(
+                    owner=request.user,
+                    slug=kwargs.get('name')
+                ).first()
+            if specific_notepad:
+                context['notepad'] = specific_notepad
+                pages = PageForNotepad.objects.filter(
+                    notepad=specific_notepad.id)
+                if pages:
+                    context['pages'] = pages
+                    if len(pages) > kwargs.get('page'):
+                        specific_page = pages[kwargs.get('page')]
+                        context['specific_page'] = specific_page
         return render(request, 'notepad/notepad_detail.html', context=context)
 
 

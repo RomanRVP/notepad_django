@@ -8,7 +8,30 @@
 {% endblock title %}
 
 {% block body %}
+<h3>title ! {{ notepad.title }}</h3>
+<div class="notepad-wrapper">
 
-{{ notepad }}
+
+
+    <div class="sidebar">
+        <div class="sidebar-list">
+            <div class="sidebar-buttons-menu">
+                {% for page in pages %}
+                <a href="#" class="sidebar-buttons-menu-btn">
+                    <h5>{{ page.title }}</h5>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="notepad-content">
+        <h3>content</h3>
+        {% if specific_page %}
+            {{ specific_page.page_text }}
+        {% endif %}
+    </div>
+
+</div>
 
 {% endblock body %}
