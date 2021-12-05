@@ -16,6 +16,7 @@ class Category(models.Model):
     slug = models.SlugField(default='', editable=False)
 
     def save(self, *args, **kwargs):
+        # ! Kludge !
         # Делаем уникальный слаг для каждой категории пользователя.
         # Проблема была в том, что имя "CAT#3" и "cat3" генерировали
         # одинаковый слаг ("cat3"). Данный костыль нужно будет рефакторить.
@@ -54,6 +55,7 @@ class Notepad(models.Model):
     slug = models.SlugField(default='', editable=False)
 
     def save(self, *args, **kwargs):
+        # ! Kludge !
         unique_slug = slugify(self.title)
         while Notepad.objects.filter(owner=self.owner, slug=unique_slug):
             unique_slug += '-'
@@ -83,6 +85,23 @@ class PageForNotepad(models.Model):
                                 related_name='Page')
     title = models.CharField(max_length=100, verbose_name='Название страницы')
     page_text = models.TextField(verbose_name='Текст страницы')
+
+    def get_absolute_url(self):
+        # ! Kludge !
+        # В урле нужно оставить именно номер страницы в конкретном блокноте.
+        # В будущем оптимизировать это с помощью чистого SQL, либо продолжать
+        # гуглить.
+        self_page_num = PageForNotepad.objects.filter(
+            notepad=self.notepad.id)
+        page_num = 0
+        for i in self_page_num:
+            if i.id == self.id:
+                break
+            page_num += 1
+        return reverse('specific_notepad',
+                       kwargs={'notepad_slug': self.notepad.slug,
+                               'page_num': page_num,
+                               'category_slug': self.notepad.category})
 
     def __str__(self):
         return f'Блокнот: {self.notepad.title} \nСтраница: {self.title}'
