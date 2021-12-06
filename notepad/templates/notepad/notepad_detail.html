@@ -1,35 +1,45 @@
 {% extends 'notepad/base.html' %}
 {% load static %}
 
-<link rel="stylesheet" href="{% static 'notepad/css/notepad_detail.css'%}">
+{% block head %}
+<link rel="stylesheet" href="{% static 'notepad/css/notepad_detail.css' %}">
+{% endblock head %}
 
 {% block title %}
 <title>Notepad Detail</title>
 {% endblock title %}
 
 {% block body %}
-<h3>title ! {{ notepad.title }}</h3>
+
 <div class="notepad-wrapper">
 
-
-
-    <div class="sidebar">
-        <div class="sidebar-list">
-            <div class="sidebar-buttons-menu">
-                {% for page in pages %}
-                <a href="{{ page.get_absolute_url }}" class="sidebar-buttons-menu-btn">
-                    <h5>{{ page.title }}</h5>
-                </a>
-                {% endfor %}
-            </div>
-        </div>
+    <div class="notepad-title">
+        <h3>{{ notepad.title }}</h3>
     </div>
 
     <div class="notepad-content">
-        <h3>content</h3>
+
+        <div class="sidebar">
+            <div class="sidebar-list">
+                <h4>Страницы:</h4>
+                <br>
+                <div class="sidebar-buttons-menu">
+                    {% for page in pages %}
+                    <a href="{{ page.get_absolute_url }}" class="sidebar-buttons-menu-btn">
+                        <h5>{{ page.title }}</h5>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="specific_page">
         {% if specific_page %}
-            {{ specific_page.page_text }}
+            <p class="page_text">
+                {{ specific_page.page_text }}
+            </p>
         {% endif %}
+        </div>
     </div>
 
 </div>
