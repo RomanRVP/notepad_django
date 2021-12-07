@@ -25,8 +25,8 @@
                 <br>
                 <div class="sidebar-buttons-menu">
                     {% for page in pages %}
-                    <a href="{{ page.get_absolute_url }}" class="sidebar-buttons-menu-btn">
-                        <h5>{{ page.title }}</h5>
+                    <a href="{{ page.0 }}" class="sidebar-buttons-menu-btn">
+                        <h5>{{ page.1.title }}</h5>
                     </a>
                     {% endfor %}
                 </div>

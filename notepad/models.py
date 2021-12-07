@@ -86,27 +86,10 @@ class PageForNotepad(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название страницы')
     page_text = models.TextField(verbose_name='Текст страницы')
 
-    def get_absolute_url(self):
+    def get_absolute_url(self, page_num):
         # ! Kludge !
-        # В урле нужно оставить именно номер страницы в конкретном блокноте.
-        # В будущем оптимизировать это с помощью чистого SQL, либо продолжать
-        # гуглить.
-        # (Жуть в том, что просматривая блокнот - потенциально будет лететь
-        # огромное кол-во запросов в бд, и выполняться куча циклов. Если это
-        # скажется на производительности - самое простое и быстрое решение
-        # которое я вижу на данный момент - это заменить номер страницы
-        # блокнота на её PK(id) в URL.
-        # Есть еще одна чуть менее костыльная идея (вроде) - можно реализовать
-        # генератор ссылок для страниц в service.py и передавать их через
-        # контекст во вьюху. Вместо запроса в бд для каждой страницы, будет
-        # один запрос при переходе на страницу.)
-        self_page_num = PageForNotepad.objects.filter(
-            notepad=self.notepad.id)
-        page_num = 0
-        for i in self_page_num:
-            if i.id == self.id:
-                break
-            page_num += 1
+        # Страница просматривается только через блокнот, а в урле должен
+        # быть номер страницы относительно блокнота, к которому она привязана.
         return reverse('specific_notepad',
                        kwargs={'notepad_slug': self.notepad.slug,
                                'page_num': page_num,

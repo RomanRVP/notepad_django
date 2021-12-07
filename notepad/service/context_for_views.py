@@ -42,7 +42,11 @@ def get_context_for_detail_notepad_view(
                 notepad=notepad.id
             )
             if pages:
-                context['pages'] = pages
+                # Вместо кверисета (в context['pages']) будем передавать
+                # список, содержащий кортежи, внутри которых будет
+                # готовая ссылка на страницу, и сама страница.
+                context['pages'] = [(pages[i].get_absolute_url(i), pages[i])
+                                    for i in range(len(pages))]
                 if len(pages) > page_num:
                     context['specific_page'] = pages[page_num]
 
