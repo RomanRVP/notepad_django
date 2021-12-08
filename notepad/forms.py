@@ -3,7 +3,8 @@ from django import forms
 from .models import Notepad, Category, PageForNotepad
 from .service.choices_generator_for_forms import (
     generate_choices_for_category,
-    generate_choices_for_notepad
+    generate_choices_for_notepad,
+    generate_choices_for_page
 )
 
 
@@ -82,3 +83,18 @@ class UserDeleteNotepadForm(forms.Form):
         }
     )
 
+
+class UserDeletePageForm(forms.Form):
+    """
+    Форма для удаления страницы из блокнота пользователем.
+    """
+    def __init__(self, notepad, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['choice_page_for_delete'].choices = \
+            generate_choices_for_page(notepad)
+    choice_page_for_delete = forms.ChoiceField(
+        label='Выберите страницу для удаления', required=None,
+        error_messages={
+            'invalid_choice': 'Выберите доступную страницу.'
+        }
+    )

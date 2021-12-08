@@ -11,7 +11,8 @@ from .forms import (
     UserAddNotepadForm,
     UserAddPageForm,
     UserDeleteCategoryForm,
-    UserDeleteNotepadForm
+    UserDeleteNotepadForm,
+    UserDeletePageForm
 )
 from .models import Category, Notepad, PageForNotepad
 from .service.context_for_forms import get_error_context_for_forms
@@ -19,6 +20,7 @@ from .service.context_for_views import (
     get_context_for_home_page_with_specific_category_view,
     get_context_for_detail_notepad_view
 )
+from .service.checker_for_view import check_notepad_with_user_slug_ang_category
 
 
 class HomePage(views.View):
@@ -238,3 +240,24 @@ class UserDeleteNotepadView(views.View):
             context['message'] = get_error_context_for_forms(
                 form.is_valid(), request.user.is_authenticated)
         return render(request, template, context)
+
+
+class UserDeletePageView(views.View):
+    """
+    Удаление страницы пользователем.
+    """
+    def get(self, request, *args, **kwargs):
+        notepad = check_notepad_with_user_slug_ang_category(
+                request.user.id,
+                kwargs.get('notepad_slug'),
+                kwargs.get('category_slug'))
+        if notepad:
+            form = UserDeletePageForm(notepad)
+            context = {'form': form}
+        else:
+            context = {
+                'message': 'Ошибка.\n'
+                           'Блокнот к которому вы обращаетесь не найден.'
+            }
+        return render(request, 'notepad/user_del_page.html', context)
+
