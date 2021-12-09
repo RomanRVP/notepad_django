@@ -250,7 +250,8 @@ class UserDeletePageView(views.View):
         notepad = check_notepad_with_user_slug_ang_category(
                 request.user.id,
                 kwargs.get('notepad_slug'),
-                kwargs.get('category_slug'))
+                kwargs.get('category_slug')
+        )
         if notepad:
             form = UserDeletePageForm(notepad)
             context = {'form': form}
@@ -259,5 +260,25 @@ class UserDeletePageView(views.View):
                 'message': 'Ошибка.\n'
                            'Блокнот к которому вы обращаетесь не найден.'
             }
+        return render(request, 'notepad/user_del_page.html', context)
+
+    def post(self, request, *args, **kwargs):
+        notepad = check_notepad_with_user_slug_ang_category(
+            request.user.id,
+            kwargs.get('notepad_slug'),
+            kwargs.get('category_slug')
+        )
+
+        form = UserDeletePageForm(notepad, request.POST)
+        context = {'form': form}
+        if form.is_valid() and request.user.is_authenticated:
+            page_id = form.cleaned_data['choice_page_for_delete']
+            obj = PageForNotepad.objects.get(pk=page_id)
+            page_title = obj.title
+            obj.delete()
+            context['message'] = f'Страница "{page_title}" из блокнота ' \
+                                 f'"{notepad.title}" была удалена.'
+        else:
+            context['message'] = 'Пожалуйста выберите доступную страницу.'
         return render(request, 'notepad/user_del_page.html', context)
 
