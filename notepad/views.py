@@ -119,10 +119,6 @@ class UserAddCategoryView(views.View):
                                      f'{form.cleaned_data["name"]} создана'
             except IntegrityError:
                 context['message'] = 'Категория с данным именем уже существует'
-                return render(request, template, context)
-
-            # В случае успешного создания категории:
-            return render(request, template, context)
 
         else:
             context['message'] = get_error_context_for_forms(
@@ -149,7 +145,7 @@ class UserAddNotepadView(views.View):
             obj.save()
             context['message'] = f'Блокнот {form.cleaned_data["title"]} ' \
                                  f'был создан.'
-            return render(request, template, context)
+
         else:
             context['message'] = get_error_context_for_forms(
                 form.is_valid(), request.user.is_authenticated)
@@ -175,7 +171,7 @@ class UserAddPageView(views.View):
             context['message'] = f'Страница {form.cleaned_data["title"]} ' \
                                  f'в блокноте {form.cleaned_data["notepad"]}' \
                                  f' была создана.'
-            return render(request, template, context)
+
         else:
             context['message'] = get_error_context_for_forms(
                 form.is_valid(), request.user.is_authenticated)
@@ -205,7 +201,7 @@ class UserDeleteCategoryView(views.View):
             else:
                 context['message'] = 'Что бы удалить категорию, ' \
                                      'сперва нужно её выбрать.'
-            return render(request, template, context)
+
         else:
             context['message'] = get_error_context_for_forms(
                 form.is_valid(), request.user.is_authenticated)
@@ -235,7 +231,7 @@ class UserDeleteNotepadView(views.View):
             else:
                 context['message'] = 'Что бы удалить блокнот, ' \
                                      'сперва нужно его выбрать.'
-            return render(request, template, context)
+
         else:
             context['message'] = get_error_context_for_forms(
                 form.is_valid(), request.user.is_authenticated)
