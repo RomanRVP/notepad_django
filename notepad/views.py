@@ -268,17 +268,20 @@ class UserDeletePageView(views.View):
             kwargs.get('notepad_slug'),
             kwargs.get('category_slug')
         )
-
         form = UserDeletePageForm(notepad, request.POST)
         context = {'form': form}
         if form.is_valid() and request.user.is_authenticated:
             page_id = form.cleaned_data['choice_page_for_delete']
-            obj = PageForNotepad.objects.get(pk=page_id)
-            page_title = obj.title
-            obj.delete()
-            context['message'] = f'Страница "{page_title}" из блокнота ' \
-                                 f'"{notepad.title}" была удалена.'
+            if notepad and page_id:
+                obj = PageForNotepad.objects.get(pk=page_id)
+                page_title = obj.title
+                obj.delete()
+                context['message'] = f'Страница "{page_title}" из блокнота ' \
+                                     f'"{notepad.title}" была удалена.'
+            else:
+                context['message'] = 'Блокнот либо страницы не были найдены :('
         else:
-            context['message'] = 'Пожалуйста выберите доступную страницу.'
+            context['message'] = get_error_context_for_forms(
+                form.is_valid(), request.user.is_authenticated)
         return render(request, 'notepad/user_del_page.html', context)
 
