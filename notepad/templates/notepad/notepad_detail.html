@@ -36,11 +36,15 @@
         <div class="specific_page">
             <div class="keys-in-notepad">
                     <div class="add-page-in-this-notepad">
-                        <a href="#"><h2>add new page</h2></a>
+                        <a href="{% url 'add_page' %}"><h4>Создать страницу</h4></a>
                     </div>
+                    {% if pages %}
                     <div class="del-this-page">
-                        <a href="#"><h4>del this page</h4></a>
+                        <a href="{% url 'del_page' notepad_slug=notepad_slug category_slug=category_slug %}">
+                            <h4>Удалить страницу из данного блокнота</h4>
+                        </a>
                     </div>
+                    {% endif %}
             </div>
         {% if specific_page %}
             <p class="page_text">

@@ -65,6 +65,8 @@ class NotepadDetailView(views.View):
                 kwargs.get('notepad_slug'),
                 kwargs.get('page_num')
             )
+            context['notepad_slug'] = kwargs.get('notepad_slug')
+            context['category_slug'] = kwargs.get('category_slug')
         else:
             context = None
         return render(request, 'notepad/notepad_detail.html', context=context)
