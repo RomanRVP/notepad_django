@@ -26,7 +26,9 @@
                 <div class="sidebar-buttons-menu">
                     {% for page in pages %}
                     <a href="{{ page.0 }}" class="sidebar-buttons-menu-btn">
-                        <h5>{{ page.1.title }}</h5>
+                        <div class="style-for-page-link-button">
+                            {{ page.1.title }}
+                        </div>
                     </a>
                     {% endfor %}
                 </div>
@@ -36,12 +38,18 @@
         <div class="specific_page">
             <div class="keys-in-notepad">
                     <div class="add-page-in-this-notepad">
-                        <a href="{% url 'add_page' %}"><h4>Создать страницу</h4></a>
+                        <a href="{% url 'add_page' %}">
+                            <div class="style-for-add-page-button">
+                                Создать страницу
+                            </div>
+                        </a>
                     </div>
                     {% if pages %}
                     <div class="del-this-page">
                         <a href="{% url 'del_page' notepad_slug=notepad_slug category_slug=category_slug %}">
-                            <h4>Удалить страницу из данного блокнота</h4>
+                            <div class="style-for-del-page-button">
+                                Удалить страницу из данного блокнота
+                            </div>
                         </a>
                     </div>
                     {% endif %}

@@ -8,25 +8,29 @@
         <div class="sidebar-list">
             <div class="sidebar-buttons-menu">
                 <a href="{% url 'add_category' %}" class="sidebar-buttons-menu-btn">
-                    <h5>Добавить категорию</h5>
+                    <div class="style-for-sidebar-button">
+                        Добавить категорию
+                    </div>
                 </a>
                 <a href="{% url 'del_category' %}" class="sidebar-buttons-menu-btn">
-                    <h5>Удалить категорию</h5>
+                    <div class="style-for-sidebar-button">
+                        Удалить категорию
+                    </div>
                 </a>
                 <a href="{% url 'add_notepad' %}" class="sidebar-buttons-menu-btn">
-                    <h5>Создать блокнот</h5>
+                    <div class="style-for-sidebar-button">Создать блокнот</div>
                 </a>
                 <a href="{% url 'del_notepad' %}" class="sidebar-buttons-menu-btn">
-                    <h5>Удалить блокнот</h5>
+                    <div class="style-for-sidebar-button">Удалить блокнот</div>
                 </a>
             </div>
             <h4>Ваши категории:</h4>
             <br>
             {% for category in categories_list %}
             <a href="{{ category.get_absolute_url }}">
-                <p class="category-link">
+                <div class="style-for-sidebar-button">
                     {{ category.name }}
-                </p>
+                </div>
             </a>
             {% endfor %}
         </div>

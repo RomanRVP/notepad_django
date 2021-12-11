@@ -43,11 +43,30 @@
 .notepad {
     width: 100%;
     height: 45px;
-    border: black solid 1px;
+    border: dimgray solid 1px;
+    color: black;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 3px;
     margin-bottom: 3px;
+    transition: 0.7s;
+}
+.notepad:hover {
+    background: lightskyblue;
+}
+
+.style-for-sidebar-button {
+    border: 1px solid dimgray;
+    font-size: 14px;
+    text-align: center;
+    overflow: hidden;
+    color: black;
+    padding: 2px;
+    margin: 2px;
+    transition: 0.7s;
+}
+.style-for-sidebar-button:hover {
+    background: lightskyblue;
 }

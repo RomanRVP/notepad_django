@@ -57,3 +57,45 @@
     font-size: 19px;
     font-family: serif;
 }
+
+.style-for-page-link-button {
+    border: 1px solid dimgray;
+    font-size: 14px;
+    text-align: center;
+    overflow: hidden;
+    color: black;
+    padding: 2px;
+    margin: 2px;
+    transition: 0.7s;
+}
+.style-for-page-link-button:hover {
+    background: lightskyblue;
+}
+
+.style-for-add-page-button {
+    border: 1px solid dimgray;
+    font-size: 14px;
+    text-align: center;
+    overflow: hidden;
+    color: black;
+    padding: 2px;
+    margin: 2px;
+    transition: 0.7s;
+}
+.style-for-add-page-button:hover {
+    background: greenyellow;
+}
+
+.style-for-del-page-button {
+    border: 1px solid dimgray;
+    font-size: 14px;
+    text-align: center;
+    overflow: hidden;
+    color: black;
+    padding: 2px;
+    margin: 2px;
+    transition: 0.7s;
+}
+.style-for-del-page-button:hover {
+    background: tomato;
+}
